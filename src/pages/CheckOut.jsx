@@ -14,7 +14,7 @@ export default function CheckOut() {
 
     const [giftCardResponse, setGiftCardResponse] = useState({});
 
-    let numberOfConfirmation = 1
+    let numberOfConfirmation = 0
 
     let { id } = useParams();
 
