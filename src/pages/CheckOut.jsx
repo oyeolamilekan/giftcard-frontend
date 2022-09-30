@@ -65,10 +65,10 @@ export default function CheckOut() {
             isError={orderError}
         >
             <div className="d-flex justify-content-center mt-3">
-                <div className="text-center">
-                    <ConfirmationStatus state={giftCardResponse?.state ?? ""} />
-                    <div className="card p-5 d-flex justify-content-center text-center">
-                        <QRCode value={order?.recieveAddress ?? ""} />
+                <ConfirmationStatus state={giftCardResponse?.state ?? ""} />
+                <div className="card text-center">
+                    <div className="card-body d-flex flex-column align-items-center">
+                        <QRCode value={order?.recieveAddress ?? ""} className="d-flex justify-content-center" />
                         <br />
                         <div>Send {order?.expectedAmount ?? 0} of {order?.expectedCurrency ?? ""} to the address above to process your transaction</div>
                         <br />
