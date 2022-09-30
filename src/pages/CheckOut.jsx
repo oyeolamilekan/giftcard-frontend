@@ -8,6 +8,8 @@ import CustomSupense from "../components/CustomSuspense";
 import useAxios from "../hooks/useAxios";
 
 export default function CheckOut() {
+    const [listenToTransaction, setListenToTransaction] = useState(false)
+
     const { VITE_BASE_URL } = import.meta.env
 
     const [giftCardResponse, setGiftCardResponse] = useState({});
@@ -22,27 +24,37 @@ export default function CheckOut() {
         headers: JSON.stringify({ accept: '*/*' }),
     })
 
-    const confirmRequest = async ()  => {
+    const confirmRequest = async () => {
+        try {
+            numberOfConfirmation++
 
-        const myInterval = setInterval(myTimer, 1000);
+            setListenToTransaction(true);
 
-        async function myTimer() {
-            const response = await axios.get(`${VITE_BASE_URL}/order_status/${id}`)
+            const myInterval = setInterval(myTimer, 1000);
 
-            const { data } = response
+            async function myTimer() {
+                const response = await axios.get(`${VITE_BASE_URL}/order_status/${id}`)
 
-            if (data.state == 'paid' || numberOfConfirmation > 50) {
-                setGiftCardResponse(data)
-                myStopFunction()
-            } else {
-                if (giftCardResponse.state !== data.state) {
+                const { data } = response
+
+                if (data.state == 'paid' || numberOfConfirmation > 50) {
+                    setListenToTransaction(false);
                     setGiftCardResponse(data)
+                    myStopFunction()
+                } else {
+                    if (giftCardResponse.state !== data.state) {
+                        setGiftCardResponse(data)
+                    }
                 }
             }
-        }
 
-        function myStopFunction() {
-            clearInterval(myInterval);
+            function myStopFunction() {
+                clearInterval(myInterval);
+            }
+
+        } catch (error) {
+            setListenToTransaction(false);
+
         }
     }
 
@@ -54,13 +66,13 @@ export default function CheckOut() {
         >
             <div className="d-flex justify-content-center mt-3">
                 <div className="text-center">
-                    <ConfirmationStatus state={giftCardResponse?.state ?? ""}/>
+                    <ConfirmationStatus state={giftCardResponse?.state ?? ""} />
                     <div className="card p-5 d-flex justify-content-center text-center">
                         <QRCode value={order?.recieveAddress ?? ""} />
                         <br />
-                        <div>Send {order?.expectedAmount ?? 0} of {order?.expectedCurrency ?? ""} to the address above</div>
+                        <div>Send {order?.expectedAmount ?? 0} of {order?.expectedCurrency ?? ""} to the address above to process your transaction</div>
                         <br />
-                        <Button onClick={confirmRequest}>I have paid</Button>
+                        <Button onClick={confirmRequest} disabled={listenToTransaction}>{listenToTransaction ? "Listening to the blockchain" : "I have paid"}</Button>
                     </div>
                 </div>
             </div>
