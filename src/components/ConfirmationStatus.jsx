@@ -5,7 +5,7 @@ export default function ConfirmationStatus({ state }) {
         case "processing":
             return <div className="alert alert-secondary">Payment received and the transaction is currently being processed.</div>  
         case "initiated":
-            return <div className="alert alert-primary">Your transaction is currently being processed.</div>  
+            return <div className="alert alert-info">Your transaction is currently being processed.</div>  
         default:
             return <></>
     }
