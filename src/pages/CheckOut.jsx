@@ -64,7 +64,7 @@ export default function CheckOut() {
             isLoading={orderLoading}
             isError={orderError}
         >
-            <div className="d-flex justify-content-center mt-3">
+            <div className="d-flex flex-column align-items-center mt-3">
                 <ConfirmationStatus state={giftCardResponse?.state ?? ""} />
                 <div className="card text-center">
                     <div className="card-body d-flex flex-column align-items-center">
