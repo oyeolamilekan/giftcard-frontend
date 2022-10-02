@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useForm } from '../hooks/useForm';
 import { useNavigate } from 'react-router-dom';
+const { VITE_BASE_URL } = import.meta.env
 
 function MyModal({ title, id: productId, crypto, amount, showModal, handleClose }) {
 
@@ -24,7 +25,7 @@ function MyModal({ title, id: productId, crypto, amount, showModal, handleClose 
         setBtnState(true)
         try {
             const data = { ...values, productId }
-            const response = await axios.post("https://crypto-giftcard-production.up.railway.app/api/create_order", data)
+            const response = await axios.post(`${VITE_BASE_URL}create_order`, data)
             navigate(`/checkout/${response.data.id}`)
         } catch (error) {
             console.log(error)
