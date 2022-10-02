@@ -54,7 +54,6 @@ export default function CheckOut() {
 
         } catch (error) {
             setListenToTransaction(false);
-
         }
     }
 
